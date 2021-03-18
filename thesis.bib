@@ -1,20 +1,178 @@
-@article{claerbout1991scrutiny,
-  title={A Scrutiny of the Introduction},
-  author={Claerbout, Jon F},
-  journal={The Leading Edge},
-  volume={10},
-  number={1},
-  pages={39--41},
-  year={1991},
-  publisher={Society of Exploration Geophysicists}
+@misc{mcmahan2016communicationefficient,
+    title={Communication-Efficient Learning of Deep Networks from Decentralized Data},
+    author={H. Brendan McMahan and Eider Moore and Daniel Ramage and Seth Hampson and Blaise Agüera y Arcas},
+    year={2016},
+    eprint={1602.05629},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG}
 }
 
-@article{landes1951scrutiny,
-  title={A Scrutiny of the Abstract},
-  author={Landes, Kenneth K},
-  journal={Bulletin of the American Association of Petroleum Geologists},
-  volume={35},
-  number={7},
-  pages={1660},
-  year={1951}
+@InProceedings{gossiplearningalternative,
+    author="Heged{\H{u}}s, Istv{\'a}n
+    and Danner, G{\'a}bor
+    and Jelasity, M{\'a}rk",
+    editor="Pereira, Jos{\'e}
+    and Ricci, Laura",
+    title="Gossip Learning as a Decentralized Alternative to Federated Learning",
+    booktitle="Distributed Applications and Interoperable Systems",
+    year="2019",
+    publisher="Springer International Publishing",
+    address="Cham",
+    pages="74--90",
+    abstract="Federated learning is a distributed machine learning approach for computing models over data collected by edge devices. Most importantly, the data itself is not collected centrally, but a master-worker architecture is applied where a master node performs aggregation and the edge devices are the workers, not unlike the parameter server approach. Gossip learning also assumes that the data remains at the edge devices, but it requires no aggregation server or any central component. In this empirical study, we present a thorough comparison of the two approaches. We examine the aggregated cost of machine learning in both cases, considering also a compression technique applicable in both approaches. We apply a real churn trace as well collected over mobile phones, and we also experiment with different distributions of the training data over the devices. Surprisingly, gossip learning actually outperforms federated learning in all the scenarios where the training data are distributed uniformly over the nodes, and it performs comparably to federated learning overall.",
+    isbn="978-3-030-22496-7"
+}
+
+@inbook{tempcon,
+author = {Ma, Yifei and Narayanaswamy, Balakrishnan and Lin, Haibin and Ding, Hao},
+title = {Temporal-Contextual Recommendation in Real-Time},
+year = {2020},
+isbn = {9781450379984},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3394486.3403278},
+abstract = {Personalized real-time recommendation has had a profound impact on retail, media, entertainment and other industries. However, developing recommender systems for every use case is costly, time consuming and resource-intensive. To fill this gap, we present a black-box recommender system that can adapt to a diverse set of scenarios without the need for manual tuning. We build on techniques that go beyond simple matrix factorization to incorporate important new sources of information: the temporal order of events [Hidasi et al., 2015], contextual information to bootstrap cold-start users, metadata information about items [Rendle 2012] and the additional information surrounding each event. Additionally, we address two fundamental challenges when putting recommender systems in the real-world: how to efficiently train them with even millions of unique items and how to cope with changing item popularity trends [Wu et al., 2017]. We introduce a compact model, which we call hierarchical recurrent network with meta data (HRNN-meta) to address the real-time and diverse metadata needs; we further provide efficient training techniques via importance sampling that can scale to millions of items with little loss in performance. We report significant improvements on a wide range of real-world datasets and provide intuition into model capabilities with synthetic experiments. Parts of HRNN-meta have been deployed in production at scale for customers to use at Amazon Web Services and serves as the underlying recommender engine for thousands of websites.},
+booktitle = {Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining},
+pages = {2291–2299},
+numpages = {9}
+}
+
+@article{WangLCZQH15,
+  author    = {Zhangyang Wang and
+               Xianming Liu and
+               Shiyu Chang and
+               Jiayu Zhou and
+               Guo{-}Jun Qi and
+               Thomas S. Huang},
+  title     = {Decentralized Recommender Systems},
+  journal   = {CoRR},
+  volume    = {abs/1503.01647},
+  year      = {2015},
+  url       = {http://arxiv.org/abs/1503.01647},
+  archivePrefix = {arXiv},
+  eprint    = {1503.01647},
+  timestamp = {Mon, 13 Aug 2018 16:46:46 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/WangLCZQH15.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{QuadranaKHC17,
+  author    = {Massimo Quadrana and
+               Alexandros Karatzoglou and
+               Bal{\'{a}}zs Hidasi and
+               Paolo Cremonesi},
+  title     = {Personalizing Session-based Recommendations with Hierarchical Recurrent
+               Neural Networks},
+  journal   = {CoRR},
+  volume    = {abs/1706.04148},
+  year      = {2017},
+  url       = {http://arxiv.org/abs/1706.04148},
+  archivePrefix = {arXiv},
+  eprint    = {1706.04148},
+  timestamp = {Mon, 13 Aug 2018 16:46:29 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/QuadranaKHC17.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{ffmctr,
+author = {Juan, Yuchin and Zhuang, Yong and Chin, Wei-Sheng and Lin, Chih-Jen},
+title = {Field-Aware Factorization Machines for CTR Prediction},
+year = {2016},
+isbn = {9781450340359},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2959100.2959134},
+doi = {10.1145/2959100.2959134},
+abstract = {Click-through rate (CTR) prediction plays an important role in computational advertising. Models based on degree-2 polynomial mappings and factorization machines (FMs) are widely used for this task. Recently, a variant of FMs, field-aware factorization machines (FFMs), outperforms existing models in some world-wide CTR-prediction competitions. Based on our experiences in winning two of them, in this paper we establish FFMs as an effective method for classifying large sparse data including those from CTR prediction. First, we propose efficient implementations for training FFMs. Then we comprehensively analyze FFMs and compare this approach with competing models. Experiments show that FFMs are very useful for certain classification problems. Finally, we have released a package of FFMs for public use.},
+booktitle = {Proceedings of the 10th ACM Conference on Recommender Systems},
+pages = {43–50},
+numpages = {8},
+keywords = {click-through rate prediction, machine learning, computational advertising, factorization machines},
+location = {Boston, Massachusetts, USA},
+series = {RecSys '16}
+}
+
+@INPROCEEDINGS{dezlowrank,  author={Q. {Ling} and Y. {Xu} and W. {Yin} and Z. {Wen}},  booktitle={2012 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},   title={Decentralized low-rank matrix completion},   year={2012},  volume={},  number={},  pages={2925-2928},  doi={10.1109/ICASSP.2012.6288528}}
+
+@misc{mishra2018riemannian,
+      title={A Riemannian gossip approach to subspace learning on Grassmann manifold}, 
+      author={Bamdev Mishra and Hiroyuki Kasai and Pratik Jawanpuria and Atul Saroop},
+      year={2018},
+      eprint={1705.00467},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+
+@Article{Lin2015,
+author={Lin, An-Ya
+and Ling, Qing},
+title={Decentralized and Privacy-Preserving Low-Rank Matrix Completion},
+journal={Journal of the Operations Research Society of China},
+year={2015},
+month={Jun},
+day={01},
+volume={3},
+number={2},
+pages={189-205},
+abstract={In this paper, we propose a decentralized algorithm to solve the low-rank matrix completion problem and analyze its privacy-preserving property. Suppose that we want to recover a low-rank matrix {\$}{\$}{\{} {\{}D{\}}{\}} = [{\{} {\{}D{\}}{\}}{\_}{\{}1{\}}, {\{} {\{}D{\}}{\}}{\_}{\{}2{\}}, {\backslash}cdots , {\{} {\{}D{\}}{\}}{\_}{\{}L{\}}]{\$}{\$}D=[D1,D2,⋯,DL]from a subset of its entries. In a network composed of {\$}{\$}L{\$}{\$}Lagents, each agent {\$}{\$}i{\$}{\$}iobserves some entries of {\$}{\$}{\{} {\{}D{\}}{\}}{\_}{\{}i{\}}{\$}{\$}Di. We factorize the unknown matrix {\$}{\$}{\{} {\{}D{\}}{\}}{\$}{\$}Das the product of a public matrix {\$}{\$}{\{} {\{}X{\}}{\}}{\$}{\$}Xwhich is common to all agents and a private matrix {\$}{\$}{\{} {\{}Y{\}}{\}} = [{\{} {\{}Y{\}}{\}}{\_}{\{}1{\}}, {\{} {\{}Y{\}}{\}}{\_}{\{}2{\}}, {\backslash}cdots , {\{} {\{}Y{\}}{\}}{\_}{\{}L{\}}]{\$}{\$}Y=[Y1,Y2,⋯,YL]of which {\$}{\$}{\{} {\{}Y{\}}{\}}{\_}{\{}i{\}}{\$}{\$}Yiis held by agent {\$}{\$}i{\$}{\$}ionly. Each agent {\$}{\$}i{\$}{\$}iupdates {\$}{\$}{\{} {\{}Y{\}}{\}}{\_}{\{}i{\}}{\$}{\$}Yiand its local estimate of {\$}{\$}{\{} {\{}X{\}}{\}}{\$}{\$}X, denoted by {\$}{\$}{\{} {\{}X{\}}{\}}{\_}{\{}(i){\}}{\$}{\$}X(i), in an alternating manner. Through exchanging information with neighbors, all the agents move toward a consensus on the estimates {\$}{\$}{\{} {\{}X{\}}{\}}{\_}{\{}(i){\}}{\$}{\$}X(i). Once the consensus is (nearly) reached throughout the network, each agent {\$}{\$}i{\$}{\$}irecovers {\$}{\$}{\{} {\{}D{\}}{\}}{\_}{\{}i{\}} = {\{} {\{}X{\}}{\}}{\_}{\{}(i){\}}{\{} {\{}Y{\}}{\}}{\_}{\{}i{\}}{\$}{\$}Di=X(i)Yi, thus {\$}{\$}{\{} {\{}D{\}}{\}}{\$}{\$}Dis recovered. In this progress, communication through the network may disclose sensitive information about the data matrices {\$}{\$}{\{} {\{}D{\}}{\}}{\_}{\{}i{\}}{\$}{\$}Dito a malicious agent. We prove that in the proposed algorithm, D-LMaFit, if the network topology is well designed, the malicious agent is unable to reconstruct the sensitive information from others.},
+issn={2194-6698},
+doi={10.1007/s40305-015-0080-4},
+url={https://doi.org/10.1007/s40305-015-0080-4}
+}
+
+@misc{mishra2016riemannian,
+      title={A Riemannian gossip approach to decentralized matrix completion}, 
+      author={Bamdev Mishra and Hiroyuki Kasai and Atul Saroop},
+      year={2016},
+      eprint={1605.06968},
+      archivePrefix={arXiv},
+      primaryClass={cs.NA}
+}
+
+@misc{ammaduddin2019federated,
+      title={Federated Collaborative Filtering for Privacy-Preserving Personalized Recommendation System}, 
+      author={Muhammad Ammad-ud-din and Elena Ivannikova and Suleiman A. Khan and Were Oyomno and Qiang Fu and Kuan Eeik Tan and Adrian Flanagan},
+      year={2019},
+      eprint={1901.09888},
+      archivePrefix={arXiv},
+      primaryClass={cs.IR}
+}
+
+@article{glvsfl,
+title = {Decentralized learning works: An empirical comparison of gossip learning and federated learning},
+journal = {Journal of Parallel and Distributed Computing},
+volume = {148},
+pages = {109-124},
+year = {2021},
+issn = {0743-7315},
+doi = {https://doi.org/10.1016/j.jpdc.2020.10.006},
+url = {https://www.sciencedirect.com/science/article/pii/S0743731520303890},
+author = {István Hegedűs and Gábor Danner and Márk Jelasity},
+keywords = {Federated learning, Gossip learning, Decentralized machine learning},
+abstract = {Machine learning over distributed data stored by many clients has important applications in use cases where data privacy is a key concern or central data storage is not an option. Recently, federated learning was proposed to solve this problem. The assumption is that the data itself is not collected centrally. In a master–worker architecture, the workers perform machine learning over their own data and the master merely aggregates the resulting models without seeing any raw data, not unlike the parameter server approach. Gossip learning is a decentralized alternative to federated learning that does not require an aggregation server or indeed any central component. The natural hypothesis is that gossip learning is strictly less efficient than federated learning due to relying on a more basic infrastructure: only message passing and no cloud resources. In this empirical study, we examine this hypothesis and we present a systematic comparison of the two approaches. The experimental scenarios include a real churn trace collected over mobile phones, continuous and bursty communication patterns, different network sizes and different distributions of the training data over the devices. We also evaluate a number of additional techniques including a compression technique based on sampling, and token account based flow control for gossip learning. We examine the aggregated cost of machine learning in both approaches. Surprisingly, the best gossip variants perform comparably to the best federated learning variants overall, so they offer a fully decentralized alternative to federated learning.}
+}
+
+@misc{lin2020meta,
+      title={Meta Matrix Factorization for Federated Rating Predictions}, 
+      author={Yujie Lin and Pengjie Ren and Zhumin Chen and Zhaochun Ren and Dongxiao Yu and Jun Ma and Maarten de Rijke and Xiuzhen Cheng},
+      year={2020},
+      eprint={1910.10086},
+      archivePrefix={arXiv},
+      primaryClass={cs.IR}
+}
+
+@InProceedings{glrecsys,
+author="Heged{\H{u}}s, Istv{\'a}n
+and Danner, G{\'a}bor
+and Jelasity, M{\'a}rk",
+editor="Cellier, Peggy
+and Driessens, Kurt",
+title="Decentralized Recommendation Based on Matrix Factorization: A Comparison of Gossip and Federated Learning",
+booktitle="Machine Learning and Knowledge Discovery in Databases",
+year="2020",
+publisher="Springer International Publishing",
+address="Cham",
+pages="317--332",
+abstract="Federated learning is a well-known machine learning approach over edge devices with relatively limited resources, such as mobile phones. A key feature of the approach is that no data is collected centrally; instead, data remains private and only models are communicated between a server and the devices. Gossip learning has a similar application domain; it also assumes that all the data remains private, but it requires no aggregation server or any central component. However---one would assume---gossip learning must pay a price for the extra robustness and lower maintenance cost it provides due to its fully decentralized design. Here, we examine this natural assumption empirically. The application we focus on is making recommendations based on private logs of user activity, such as viewing or browsing history. We apply low rank matrix decomposition to implement a common collaborative filtering method. First, we present similar algorithms for both frameworks to efficiently solve this problem without revealing any raw data or any user-specific parts of the model. We then examine the aggregated cost in both cases for several algorithm-variants in various simulation scenarios. These scenarios include a real churn trace collected over mobile phones. Perhaps surprisingly, gossip learning is comparable to federated learning in all the scenarios and, especially in large networks, it can even outperform federated learning when the same subsampling-based compression technique is applied in both frameworks.",
+isbn="978-3-030-43823-4"
 }

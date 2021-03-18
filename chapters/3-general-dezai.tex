@@ -1,0 +1,201 @@
+\chapter{Centralized vs. decentralized learning}
+\label{chap:general-dezai}
+
+\section{Baseline for comparison}
+
+To be able to compare decentralized methods to a centralized method a centralized baseline is needed. For simplicity, a fairly uncomplicated \acrfull{mlp} is chosen for this. See Figure \ref{fig:centralized-mlp} for the structure of the network. The strong model is trained for 5 epochs using \acrshort{sgd} on 12\,000 images sampled from the MNIST training dataset. Training the model 10 times with randomly initialized weights each time achieves an average accuracy of 93.71\% (0.16 \todo{clarify that this refers to percentage point?} standard deviation) on the whole MNIST test dataset consisting of 10\,000 images.
+
+% np.mean(scores): 0.9370899999999999
+% np.std(scores): 0.0016220049321749763
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/simple-mlp.png}
+    \caption{The architecture of a simple \acrshort{mlp}}
+    \label{fig:centralized-mlp}
+\end{figure} \todo{Explain dim=1 in Figure \ref{fig:centralized-mlp}?}
+
+\section{Majority Voting}
+\label{sec:mv-experiment}
+
+\todo{Introduce majority voting earlier, and refer to it. Also: majority or plurality?}
+
+An alternative to having one strong centralized model that produce a single prediction, is to use Majority Voting to aggregate the output from all the weak models into a single prediction.
+
+To compare Majority Voting on multiple weak models to the baseline, a collection of models must be trained. Both the dataset, the \acrshort{mlp}-architecture, and the number of training epochs (see Figure \ref{fig:centralized-mlp}) must be the same as in the baseline experiment to make the comparison fair. With 12\,000 data points in the training dataset, and if each weak model got 32 data points each, a total of 375 models are trained.
+
+Training each model for 5 epochs on a training dataset of 32 data points achieves an average accuracy of 25.23\% (0.27 standard deviation) when repeating this 10 times on the whole MNIST test dataset. This is indeed a very weak model, especially considering an accuracy of 10\% can be achieved by blindly guessing. This is however to be expected with such a small training dataset. Considering the MNIST classification task has 10 different output classes, each individual model will only have approximately 3 data points for each class.
+
+This accuracy is dramatically improved upon by using Majority Voting. Using Majority Voting to aggregate the 375 outputs into a single prediction for each data point in the test dataset yields an accuracy of 72.52\% (1.27 standard deviation) when running 10 times with randomly initialized models. See Figure \ref{fig:example-votes} for the result of two example votes. This is a dramatic improvement in accuracy compared to the accuracy of each individual model. The accuracy is however still significantly lower than the baseline model. It is also worth noting that the Majority Voting method has to calculate the output of all the 375 models and then aggregate it, while the baseline method only has to calculate the output of a single model. Majority voting might therefore be unsuited for applications where speed or resource use is critical.
+
+\begin{figure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/example-vote-1.jpg}
+        \caption{}
+        \label{fig:example-votes-a}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/example-vote-2.jpg}
+        \caption{}
+        \label{fig:example-votes-b}
+    \end{subfigure}
+    \caption{Two example voting results when the 375 models vote for which label to assign each image. On Figure \ref{fig:example-votes-a} the image was correctly classified as a six due to that label receiving the highest share of the votes, while on Figure \ref{fig:example-votes-b} the image was incorrectly classified as a three due to that label receiving the highest share of the votes.}
+    \label{fig:example-votes}
+\end{figure}
+
+\section{Model aggregation}
+
+Calculating the output of every model to do majority voting can be very inefficient. A more efficient method is to aggregate all the models to produce a single model. One way of producing an aggregated \acrshort{mlp} is to set its weights and biases to the means of all of the models weights and biases. This works as long as all of the aggregated models were initialized with the same values. To test this 375 models were trained in the same way as in Section \ref{sec:mv-experiment}, only this time they were all given the same initialization. An aggregated model is then produced by averaging their parameters.
+
+This experiment is run 10 times. Looking at the output from individual tests one can immediately see that there is a similarity between the average output for all models and the output of the aggregated model. See Figure \ref{fig:aggr-vs-mean} for two examples of this. The average accuracy for the aggregated model is 32.98\% (2.94 standard deviation) for all of the 10 runs. This is an improvement to the average accuracy of the individual models, which was 26.44\% (1.44 standard deviation). This is still less than the average accuracy achieved by Majority Voting, which is 36.51\% (4.17 standard deviation). Interestingly the accuracy of the Majority Vote was significantly worse in this experiment compared to the experiment in Section \ref{sec:mv-experiment}, where all of the models are initialized with different weights and biases, as opposed to this experiment were all of the models were initialized with the same weights and biases.
+
+\begin{figure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/aggr-vs-mean-1.jpg}
+        \caption{}
+        \label{fig:aggr-vs-mean-a}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/aggr-vs-mean-2.jpg}
+        \caption{}
+        \label{fig:aggr-vs-mean-b}
+    \end{subfigure}
+    \caption{Two examples of the output from a model aggregated from 375 models (in blue) drawn together with the mean output of those 375 models (in orange). Note that the aggregated model has a very similar output to the mean output of the models it is aggregated from.}
+    \label{fig:example-votes}
+\end{figure} \label{fig:aggr-vs-mean}
+
+\section{Weighted Majority Voting}
+\label{sec:wmv-experiment}
+
+Some models might be more accurate than others, Majority Voting might therefore not be the best choice as it weights all the models predictions equally. Weighted Majority Voting (see Section \ref{sec:wmv} might therefore be a better alternative. For testing this method, the exact same models are used as in Section \ref{sec:wmv-experiment}, but when evaluating Weighted Majority Voting the weight for each models prediction is adjusted if they they were wrong on the previous input (see Section \ref{sec:wmv}).
+
+After 10 runs with randomly initialized models, surprisingly the Weighted Majority Voting method produced worse results than Majority Voting. With $\beta=0.05$ Weighted Majority achieved an average accuracy of 44.40\% (1.16 standard deviation) over 10 runs, which is less than what Majority Voting scored in Section \ref{sec:mv-experiment}. Weighted Majority Voting consistently scored lower for all values of $\beta$ that was tested, except for $\beta = 0$ which is in essentially exactly the same as using Majority Voting as the weights will be the same for every iteration. A higher $\beta$-value seemed to only make the accuracy of the Weighted Majority converge to the accuracy of its most accurate expert faster. See Figure \ref{fig:wmv-over-time-beta} for an example of this.
+
+\begin{figure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/wmv-beta0_005.png}
+        \caption{}
+        \label{fig:wmv-over-time-beta-a}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/wmv-beta0_05.png}
+        \caption{}
+        \label{fig:wmv-over-time-beta-b}
+    \end{subfigure}
+    \caption{The moving average of the accuracy of the the result from the Majority Vote, Weighted Majority Vote, and the best model. Plotted in blue, orange and green respectively. The moving average has a width of 500 samples, which is why the graph starts at sample 500. Notice how the accuracy of the Weighted Majority Vote start out with a similar accuracy as the Majority Votes as most of the experts have similar weights in the beginning, but over time the accuracy starts to converge to the accuracy of its best expert. Notice that the accuracy of Weighted Majority Voting converged slower on Figure \ref{fig:wmv-over-time-beta-a} than on Figure \ref{fig:wmv-over-time-beta-b} due to it having a lower $\beta$-value.}
+    \label{fig:example-votes}
+\end{figure} \label{fig:wmv-over-time-beta}
+
+Over time, the best expert will dominate the rest of the experts if it continues being the best. An example of this can be seen on Figure \ref{fig:mv-vs-wvm-vote}. This might be desirable in situations where one expects that one expert is significantly more accurate than the other experts, but in this experiment both the testing and training data is uniformly sampled, which means that any advantage any expert has is just a result of a lucky sampling of the training data for that expert. And since the distribution of the test data does not change over time it is likely that the best expert will continue to dominate the other experts for the rest of the experiment. If the test distribution changes over time Weighted Majority Voting could perhaps have an advantage over Majority Voting since it could use the best expert for each different test distribution. This would however also require that some experts were significantly better than the rest of the experts at specific distributions, which could be the case if their training data was sampled from different distributions.
+
+\begin{figure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/mv-vs-wmv-1.png}
+        \caption{}
+        \label{fig:mv-vs-wvm-vote-a}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/mv-vs-wmv-2.png}
+        \caption{}
+        \label{fig:mv-vs-wvm-vote-b}
+    \end{subfigure}
+    \caption{The distribution of votes for Majority Voting and Weighted Majority Voting. Figure \ref{fig:mv-vs-wvm-vote-a} shows a voting result fairly early in the testing process. Some experts are therefore weighted heavier than others, but no single expert dominates the vote yet. Figure \ref{fig:mv-vs-wvm-vote-b} shows the voting result fairly late in the testing process. At this stage the weights of the other experts are so low in comparison to the most accurate expert that their votes are effectively ignored. A single expert dominates.}
+\end{figure} \label{fig:mv-vs-wvm-vote}
+
+% TODO: Majority voting glossary?
+
+\section{Remove class-bias}
+\label{sec:reduce-bias}
+
+In section \ref{sec:wmv-experiment} using Majority Voting seemed to in general yield better results than any single expert. A possible explanation for why could be that the Majority Voting method reduces the bias of all the experts by averaging it out\todo{this needs an explanation or a proof}. The source for the bias of the experts is the different training data that they are trained on. A hypothesis is that the best expert may be better than the Majority Vote if all of the experts are unbiased, since the bias-reduction properties of Majority Voting will then be redundant. In the previous experiments all of the experts where trained on 32 data points sampled randomly without replacement from the training dataset. This means that each expert have a different amount of data points coming from each class. In fact, since there's 10 classes, and the experts only get 32 data points each, it is impossible for an expert to have the same amount of data points from each class. Each expert therefore have a certain bias towards one or more classes.
+
+To reduce the class bias one can make sure each expert receives the same amount of data points from each class. For this to be possible the training set of each expert has to be a multiple of the amount of classes, which is in the case of the MNIST-problem is 10. Instead of each expert having 32 data points in their training set they will therefore only have 30 in the following experiment. Each expert will randomly sample 3 data points from each class. See Figure \ref{fig:bias} for a run without and a run with class-bias reduction.
+
+\begin{figure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/bias-1.jpg}
+        \caption{}
+        \label{fig:bias-a}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/bias-2.jpg}
+        \caption{}
+        \label{fig:bias-b}
+    \end{subfigure}
+    \caption{The moving average of the accuracy when using Majority Vote, Weighted Majority Vote, and the best expert. Plotted in blue, orange and green respectively. The moving average has a width of 500 samples, which is why the graph starts at sample 500. On Figure \ref{fig:bias-a} each expert is trained on 30 data points not necessarily evenly distributed across the 10 classes, while on Figure \ref{fig:bias-b} the 30 data points are evenly distributed, meaning each class is guaranteed 3 data points.}
+    \label{fig:example-votes}
+\end{figure} \label{fig:bias}
+
+From the result from the experiment it is not clear whether or not reducing the class-bias made the Weighted Majority Vote converge faster or slower to the best expert. But it is clear that the Majority Vote still outperforms the best expert even when class-bias is taken into account. A possible explanation for this could be that there are more types of bias than class-bias. This could for example be a bias towards certain features.
+
+It is however clear that removing class-bias slightly improves the performance of the individual experts. After 10 runs with random initialization the average accuracy of the experts was 25.15\% (0.33 standard deviation) without removing the class-bias, but 27.72\% (0.29 standard deviation) when removing the class-bias. This also leads to the Majority Vote performing better. Without removing class-bias the Majority Vote has an average accuracy of 72.59\% (1.19 standard deviation), while when removing the class-bias an average accuracy of 75.71\% (1.27 standard deviation) was achieved.
+
+Reducing the class-bias might in a lot of scenarios not be possible. For a lot of problems the real class distribution might not be known. Also, in a decentralized context, the control of the data used to train each expert might be limited.
+
+\section{Non-static test distribution}
+
+In previous experiments the test data was drawn from the same distribution throughout the whole experiment. I could be of interest to see if Weighted Majority Voting would outperform Majority Voting if the test distribution changed over time. In the previous experiments the performance of Weighed Majority Voting always converged to the performance of the most accurate expert. If the the test distribution changes over time, then it is possible that the best expert might change over time as well, as some experts might be better at some distribution than others.
+
+This hypothesis was tested by running both Majority Voting and Weighted Majority Voting on a segmented test set. Each segment of the test set being biased towards a specific digit, starting at 0 and ending at 9. On Figure \ref{fig:biased-test-a} each segment contains 50\% of the data it is biased towards, while on \ref{fig:biased-test-b} each segment only contain the data it is biased towards.
+
+\begin{figure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/biased-test-1.jpg}
+        \caption{}
+        \label{fig:biased-test-a}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/biased-test-2.jpg}
+        \caption{}
+        \label{fig:biased-test-b}
+    \end{subfigure}
+    \caption{The moving average of the accuracy when using Majority Vote and Weighted Majority Vote, plotted in blue, and orange respectively, for biased test distributions. On Figure The moving average has a width of 250 samples, which is why the graph starts at sample 250.}
+\end{figure} \label{fig:biased-test}
+
+Even with a changing distribution during the experiment, Weighted Majority Voting was still unable to consistently outperform Majority Voting. Weighted Majority Voting was able to outperform Majority Voting a few times, especially in the second experiment as can be seen in Figure \ref{fig:biased-test-b}, but this was always only for a short duration, and it was invariably followed by a significant crash in performance as soon as the distribution changed. This was because the experts that got weighed heavier for each segment were usually the experts that were heavily biased towards the biased digit of that segment. Some of these experts simply predicted the same digit for almost every input.
+
+\section{Using a classifier on expert predictions}
+
+Neither Majority Voting or Weighted Majority Voting managed to come close to the performance of the baseline expert. New ways of aggregating the results should therefore be explored. One possible way of doing this is to phrase it as a \acrshort{sl} problem. \todo{Can I call the involved parties experts, or does that term refer to the model?} Each involved party in a \acrshort{dzai} context has their own local data. They can also receive models from other parties. This means that they can generate feature vectors from the predictions made by the models on their local data. This together with the true label can be used to train a classifier.
+
+One problem with this approach is that the output of data put through a model that was trained on the same data can not be used as features vectors. This is because these outputs would seem much more accurate than they actually are, a classifier would therefore incorrectly assume that this output is way more accurate than they really are. Another challenge is that each party only has a limited amount of training data. In previous experiments each expert was trained on only 30 data points. It would therefore be fair to assume that each party only have 30 data points in this experiment as well. That is not a lot of data for training a classifier with a high dimensional input space. If there are 399 other parties like in the previous experiments, then the input space would be 399-dimensional if the numerical outputs of each expert is used, and 3990 if one-hot-encoding is used.
+
+For this experiment four different classifiers are used. A \acrfull{svc}, a \acrfull{nbc}, \acrfull{lda}, and \acrfull{lr}. Each classifier is trained on 30 data points, each data points consisting of the output of 399 experts. Each classifier is then tested on the MNIST test set. This experiment is repeated ten times with randomly initialized and trained experts. See Table \ref{tab:4-classifiers} for the result.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|}\hline
+        Classifier      & Accuracy (STD) \\\hline
+        \acrshort{svc}  & 46.54\% (0.60) \\
+        \acrshort{nbc}  & 45.34\% (1.24) \\
+        \acrshort{lda}  & 39.28\% (1.10) \\
+        \acrshort{lr}   & 56.46\% (0.75) \\\hline
+    \end{tabular}
+    \caption{The accuracy averaged over ten runs for each type of classifier with the standard deviation in parenthesis}
+    \label{tab:4-classifiers}
+\end{table}
+
+As can be seen on Table \ref{tab:4-classifiers} for the result, none of the classifiers managed to outperform a simple Majority Vote when they were only trained on 30 data points. Considering the high dimensionality of the input vector this is to be expected.
+
+A possible solution for this lack of data could be to have parties share generated feature vectors. \todo{The security of this is questionable. Can the private data not be reconstructed in any way?} This way they do not directly share their own private data. They do however have to share the true label of these feature vectors, which could be a privacy breach in some scenarios.
+
+See Figure \ref{fig:acc-vs-data-clfs} to see how the accuracy increases as more data is added.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/acc-vs-data-clfs.jpg}
+    \caption{Caption}
+    \label{fig:acc-vs-data-clfs}
+\end{figure}

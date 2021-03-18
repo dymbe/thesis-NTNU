@@ -1,10 +1,16 @@
-\documentclass[british,titlepage]{ntnuthesis}
+\documentclass[american,titlepage,oneside]{ntnuthesis}
 
-\title{An NTNU Thesis \LaTeX{} Document Class}
-\shorttitle{An NTNU Thesis Document Class}
-\author{Community of Practice in Computer Science Education at NTNU}
-\shortauthor{CoPCSE$@$NTNU}
-\date{CC-BY \ntnuthesisdate}
+\usepackage{parskip}
+\setlength{\parskip}{10em}
+
+\setlength{\marginparwidth}{2cm}
+\usepackage{todonotes}
+
+\title{Decentralized AI}
+\shorttitle{Decentralized AI}
+\author{Erik Dymbe}
+\shortauthor{E. Dymbe}
+\date{\today}
 
 \addbibresource{thesis.bib}
 
@@ -23,10 +29,13 @@
 \printglossary[type=\acronymtype] % Print acronyms
 \printglossary                    % Print glossary
 
+\setlength{\parskip}{1em}
+
 \input{chapters/1-introduction}
-\input{chapters/2-usage.tex}
-\input{chapters/3-structure.tex}
-\input{chapters/4-conclusion.tex}
+\input{chapters/2-background.tex}
+\input{chapters/3-general-dezai.tex}
+\input{chapters/4-decrecsys}
+\input{chapters/5-discussion.tex}
 
 \chapter*{\bibname}
 \printbibliography[heading=none]
